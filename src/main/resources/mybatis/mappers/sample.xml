@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.framework.app.mapper.sample.SampleMapper">
+
+    <!-- 샘플 리스트 조회 -->
+    <select id="getSampleList" parameterType="com.framework.app.service.sample.dto.GetSampleListSInDto" resultType="com.framework.app.service.sample.dto.GetSampleListSOutDto">
+        /** com.framework.app.mapper.sample.SampleMapper.getSampleList **/
+        SELECT
+            SAMPLE_ID
+            , SAMPLE_GROUP
+            , SAMPLE_NAME
+            , REG_ID
+            , REG_DT
+        FROM SAMPLE
+    </select>
+
+    <!-- 샘플 조회 -->
+    <select id="getSample" parameterType="com.framework.app.service.sample.dto.GetSampleSInDto" resultType="com.framework.app.service.sample.dto.GetSampleSOutDto">
+        /** com.framework.app.mapper.sample.SampleMapper.getSample **/
+        SELECT
+            SAMPLE_ID
+            , SAMPLE_GROUP
+            , SAMPLE_NAME
+            , REG_ID
+            , REG_DT
+        FROM SAMPLE
+        WHERE SAMPLE_ID = #{id}
+    </select>
+
+    <!-- 샘플 저장 -->
+    <insert id="saveSample" parameterType="com.framework.app.service.sample.dto.SaveSampleSInDto">
+        /** com.framework.app.mapper.sample.SampleMapper.saveSample **/
+        INSERT INTO SAMPLE (
+            SAMPLE_GROUP
+            , SAMPLE_NAME
+            , REG_ID
+            , REG_DT
+            , UPD_ID
+            , UPD_DT
+        ) VALUES (
+            #{sampleGroup}
+            , #{sampleName}
+            , #{userId}
+            , NOW()
+            , #{userId}
+            , NOW()
+        );
+    </insert>
+
+    <!-- 샘플 수정 -->
+    <update id="updateSample" parameterType="com.framework.app.service.sample.dto.UpdateSampleSInDto">
+        /** com.framework.app.mapper.sample.SampleMapper.updateSample **/
+        UPDATE SAMPLE SET
+            SAMPLE_GROUP = #{sampleGroup}
+            , SAMPLE_NAME = #{sampleName}
+            , UPD_ID = #{userId}
+            , UPD_DT = NOW()
+        WHERE SAMPLE_ID = #{sampleId}
+    </update>
+
+    <!-- 샘플 삭제 -->
+    <delete id="deleteSample" parameterType="com.framework.app.service.sample.dto.DeleteSampleSInDto">
+        /** com.framework.app.mapper.sample.SampleMapper.deleteSample **/
+        DELETE FROM SAMPLE
+        WHERE SAMPLE_ID = #{id}
+    </delete>
+
+</mapper>

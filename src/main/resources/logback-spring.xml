@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <!-- 콘솔에 남길 로그 패턴 정의 -->
+    <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [traceId=%X{traceId}] %clr(%5level) %cyan(%logger) - %msg%n" />
+    <!-- 로그 파일에 남길 로그 패턴 정의 -->
+    <property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [traceId=%X{traceId}] %5level %logger - %msg%n" />
+    <!-- 로그 파일 저장 위치(각 적용시 마다 변경 필요) -->
+    <property name="LOGS_PATH" value="./logs"/>
+
+    <!-- 로그 console 출력 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+
+    <!-- DEV 로그 파일 rolling 저장 -->
+    <appender name="DEV_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 로그를 남길 패턴 설정 -->
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <!-- 로그 파일을 일자, 크기 별로 생성 설정 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/application-logging-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- STG 로그 파일 rolling 저장 -->
+    <appender name="STG_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 로그를 남길 패턴 설정 -->
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <!-- 로그 파일을 일자, 크기 별로 생성 설정 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/application-logging-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- PRD 로그 파일 rolling 저장 -->
+    <appender name="PRD_ROLLING_FILE_APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- 로그를 남길 패턴 설정 -->
+        <encoder>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder>
+
+        <!-- 로그 파일을 일자, 크기 별로 생성 설정 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_PATH}/application-logging-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>2GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <springProfile name="local">
+        <root leval="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root leval="INFO">
+            <appender-ref ref="DEV_ROLLING_FILE_APPENDER" />
+        </root>
+    </springProfile>
+
+    <springProfile name="stg">
+        <root leval="INFO">
+            <appender-ref ref="STG_ROLLING_FILE_APPENDER" />
+        </root>
+    </springProfile>
+
+    <springProfile name="prd">
+        <root level="ERROR">
+            <appender-ref ref="PRD_ROLLING_FILE_APPENDER" />
+        </root>
+    </springProfile>
+
+</configuration>

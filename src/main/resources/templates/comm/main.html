@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<!--thymeleaf의 th namespace 추가-->
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="/comm/include/include-head::head(title='메인')"></th:block>
+
+<body>
+    <th:block th:replace="/comm/include/include-header::header"></th:block>
+    메인화면입니다.
+    <th:block th:insert="/comm/include/include-script::script"></th:block>
+
+    <th:block th:replace="/comm/include/include-footer::footer"></th:block>
+</body>
+</html>
