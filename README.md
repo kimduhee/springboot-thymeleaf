@@ -95,7 +95,7 @@ Response body
 - - -
 ### Service
 + Service 명시를 위해 class상단에 <code>@Service</code> 추가
-+ + lombok을 이용한 생성자 주입을 위한 <code>@RequiredArgsConstructor</code> 추가
++ lombok을 이용한 생성자 주입을 위한 <code>@RequiredArgsConstructor</code> 추가
 + <code>@RequiredArgsConstructor</code>를 이용한 주입을 위해 Mapper는 private final 로 지정
 <pre><code>Service 조회 예시
 
