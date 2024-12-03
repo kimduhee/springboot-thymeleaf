@@ -128,8 +128,8 @@ public class SampleService {
 transaction을 위해 조회성 일 경우는 <code>@Transactional(readOnly=true)</code>을 
 CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>을 기본적으로 기입해 준다
 >Transaction propagation(전파옵션)
->>+ REQUIRED
->><br/>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성
+>>+ REQUIRED<br/>
+>><code>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성</code>
 >
 >>+ SUPPORTS
 >><br/>시작된 트랜잭션이 있으면 참여, 그렇지 않으면 트랜잭션 없이 진행
