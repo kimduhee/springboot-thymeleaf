@@ -54,3 +54,6 @@ logging:
     org.springframework.web: debug
     root: info
 
+springdoc:
+  swagger-ui:
+    enabled: false

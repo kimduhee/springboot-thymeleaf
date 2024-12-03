@@ -6,7 +6,15 @@
 ### 환경 셋팅 파일
 + 환경변수에 따라 application-[환경변수값].yml을 읽어오게 되므로 해당파일에 환경에 맞게 적용 시켜 줘야 한다
 + 환경변수에 따른 logback-spring.xml 내의 정보를 변경해 줘야 한다.
-  <br/><br/>
+- - -
+### Swagger
++ local 및 dev 환경에는 적용되어 있으며, stg 및 prd 환경에서는 제외 되었다
+<pre><code>application-[환경변수값].yml</br>
+springdoc:
+  swagger-ui:
+    enabled: false  //true: 적용(local, dev), false: 제외(stg, prd)
+</code></pre>
+<br/><br/>
 # 개발 가이드
 ### Controller
 + http method에 따라 @PostMapping 또는 @GetMapping 사용
@@ -48,6 +56,13 @@ Response body
     "time": "2024-12-03T14:54:33.3117478"
 }
 </code></pre>
+- - -
+### Service
+내용 추가 예정
+- - -
+### mapper
+내용 추가 예정
+<br/><br/>
 
 # Validation
 ### Validation 사용방법

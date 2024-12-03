@@ -6,6 +6,7 @@ import com.framework.app.controller.sample.dto.*;
 import com.framework.app.service.sample.SampleService;
 import com.framework.app.service.sample.dto.*;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "샘플 API", description = "샘플 테스트용 API")
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping(value="/v1/api/sample")

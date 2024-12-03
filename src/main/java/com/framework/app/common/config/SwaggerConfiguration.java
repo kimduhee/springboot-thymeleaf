@@ -15,12 +15,12 @@ import java.util.ArrayList;
 @Configuration
 //@EnableSwagger2
 public class SwaggerConfiguration {
-
-    public SwaggerConfiguration(MappingJackson2HttpMessageConverter converter) {
-        var supportedMediaTypes = new ArrayList<>(converter.getSupportedMediaTypes());
-        supportedMediaTypes.add(new MediaType("application", "json"));
-        converter.setSupportedMediaTypes(supportedMediaTypes);
-    }
+//
+//    public SwaggerConfiguration(MappingJackson2HttpMessageConverter converter) {
+//        var supportedMediaTypes = new ArrayList<>(converter.getSupportedMediaTypes());
+//        supportedMediaTypes.add(new MediaType("application", "json"));
+//        converter.setSupportedMediaTypes(supportedMediaTypes);
+//    }
 
     @Bean
     public OpenAPI openAPI() {
