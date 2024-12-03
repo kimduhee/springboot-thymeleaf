@@ -16,26 +16,41 @@ springdoc:
 </code></pre>
 <br/><br/>
 # 개발 가이드
-### Controller
+### API Controller
++ API controller 명시를 위해 class상단에 <code>@RestController</code> 추가
++ lombok을 이용한 생성자 주입을 위한 <code>@RequiredArgsConstructor</code> 추가
++ <code>@RequiredArgsConstructor</code>를 이용한 주입을 위해 Service는 private final 로 지정
 + http method에 따라 @PostMapping 또는 @GetMapping 사용
++ swagger 사용을 위한 <code>@Tag(name = "샘플 API", description = "샘플 테스트용 API")</code>추가
 + swagger 사용을 위한 @Operation 정의 summary : api 제목, description : 설명
 + return type은 <code>ResponseEntity&lt;CommonApiResponse&gt;</code> 로 지정하고 리턴시
-<code>return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);</code> 의 cOutDto에 리턴 객체를 지정한다.
+<code>return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);</code>
+의 ok인자값에 리턴 객체를 지정한다.
 
-<pre><code>Get 방식 
+<pre><code>Get 방식
 input Dto에 @RequestBody 제외
 
-@GetMapping(value="/sample-list")
-@Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
-public ResponseEntity<CommonApiResponse> sampleList(@Validated SampleListCInDto cInDto) {
-    SampleListCOutDto cOutDto = new SampleListCOutDto();
+@Tag(name = "샘플 API", description = "샘플 테스트용 API")
+@RequiredArgsConstructor
+@Slf4j
+@RequestMapping(value="/v1/api/sample")
+@RestController
+public class SampleController {
 
-    GetSampleListSInDto sInDto = new GetSampleListSInDto();
-    //BeanUtils.copyProperties(cInDto, sInDto);
-    List<GetSampleListSOutDto> sampleList =  service.getSampleList(sInDto);
-    cOutDto.setSampleList(sampleList);
+  private final SampleService service;
 
-    return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);
+  @GetMapping(value="/sample-list")
+  @Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
+  public ResponseEntity<CommonApiResponse> sampleList(@Validated SampleListCInDto cInDto) {
+      SampleListCOutDto cOutDto = new SampleListCOutDto();
+  
+      GetSampleListSInDto sInDto = new GetSampleListSInDto();
+      //BeanUtils.copyProperties(cInDto, sInDto);
+      List<GetSampleListSOutDto> sampleList =  service.getSampleList(sInDto);
+      cOutDto.setSampleList(sampleList);
+  
+      return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);
+  }
 }
 </code></pre>
 
@@ -79,7 +94,70 @@ Response body
 </code></pre>
 - - -
 ### Service
-내용 추가 예정
++ Service 명시를 위해 class상단에 <code>@Service</code> 추가
++ + lombok을 이용한 생성자 주입을 위한 <code>@RequiredArgsConstructor</code> 추가
++ <code>@RequiredArgsConstructor</code>를 이용한 주입을 위해 Mapper는 private final 로 지정
+<pre><code>Service 조회 예시
+
+@RequiredArgsConstructor
+@Slf4j
+@Service
+public class SampleService {
+  private final SampleMapper sampleMapper;
+  
+  @Transactional(readOnly=true)
+    public List<GetSampleListSOutDto> getSampleList(GetSampleListSInDto getSampleListSInDto) {
+    return sampleMapper.getSampleList(getSampleListSInDto);
+  }
+}
+</code></pre>
+<pre><code>Service CUD 예시
+
+@RequiredArgsConstructor
+@Slf4j
+@Service
+public class SampleService {
+  private final SampleMapper sampleMapper;
+  
+  @Transactional(propagation = Propagation.REQUIRED)
+  public int updateSample(UpdateSampleSInDto updateSampleSInDto) {
+      return sampleMapper.updateSample(updateSampleSInDto);
+  }
+}
+</code></pre>
+transaction을 위해 조회성 일 경우는 <code>@Transactional(readOnly=true)</code>을 
+CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>을 기본적으로 기입해 준다
+>Transaction propagation(전파옵션)
+>>+ REQUIRED
+>><br/>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성
+>
+>>+ SUPPORTS
+>><br/>시작된 트랜잭션이 있으면 참여, 그렇지 않으면 트랜잭션 없이 진행
+>
+>>+ REQUIRES_NEW
+>><br/>부모 트랜잭션을 무시하고 새로운 트랜잭션 생성
+>
+>>+ MANDATORY
+>><br/>REQUIRED와 비슷하며 시작된 트랜잭션이 있으면 참여
+>><br/>트랜잭션이 시작된 것이 없으면 예외를 발생
+>><br/>독립적으로 트랜잭션을 진행하면 안 되는 경우 사용
+>
+>>+ NOT_SUPPORTED
+>><br/>트랜잭션을 사용하지 않게 함
+>><br/>이미 진행 중인 트랜잭션은 보류시킴
+>
+>>+ NEVER
+>><br/>트랜잭션을 사용하지 않게 강제함
+>><br/>이미 진행 중인 트랜잭션이 있으면 예외 발생
+>
+>>+ NESTED
+>><br/>진행중인 트랜잭션이 있으면 중첩 트랜잭션 시작
+>><br/>중첩 트랜잭션은 트랜잭션 안에 다시 트랜잭션을 만듬
+>
+>>+ readOnly
+>><br/>트랜잭션을 읽기 전용으로 설정
+>><br/>성능 최적화 및 특정 트랜잭션 안에서 쓰기 작업을 의도적으로 방지하기 위함
+>><br/>readOnly 값은 기본 false이며, true일 경우 insert,update, delete 실행 시 예외발생
 - - -
 ### mapper
 내용 추가 예정
@@ -98,7 +176,7 @@ public class SampleDetailCInDto {
     private String sampleId;
 }
 </code></pre>
-POST Controller input의 경우 <code>@Getter</code>만 추가해도 값들이 binding 되며 
+POST Controller input DTO의 경우 <code>@Getter</code>만 추가해도 값들이 binding 되며 
 GET Api의 경우 아래 사항 추가하여 binding 되도록 처리함
 <pre><code>@ControllerAdvice
 public class WebControllerHandler {

@@ -109,6 +109,12 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(res, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    /**
+     * RuntimeException 처리
+     * @param e
+     * @param httpServletRequest
+     * @return
+     */
     @ExceptionHandler(RuntimeException.class)
     public Object handleRuntimeExceptiontion(RuntimeException e, HttpServletRequest httpServletRequest) {
 

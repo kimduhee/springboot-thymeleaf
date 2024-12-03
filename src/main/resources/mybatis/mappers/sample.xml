@@ -24,7 +24,7 @@
             , REG_ID
             , REG_DT
         FROM SAMPLE
-        WHERE SAMPLE_ID = #{id}
+        WHERE SAMPLE_ID = #{sampleId}
     </select>
 
     <!-- 샘플 저장 -->
@@ -62,7 +62,7 @@
     <delete id="deleteSample" parameterType="com.framework.app.service.sample.dto.DeleteSampleSInDto">
         /** com.framework.app.mapper.sample.SampleMapper.deleteSample **/
         DELETE FROM SAMPLE
-        WHERE SAMPLE_ID = #{id}
+        WHERE SAMPLE_ID = #{sampleId}
     </delete>
 
 </mapper>
