@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SaveSampleCInDto {
+public class SampleSaveCInDto {
     private String sampleGroup;
     private String sampleName;
     private String userId;

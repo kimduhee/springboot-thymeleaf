@@ -4,6 +4,7 @@ import com.framework.app.common.handler.CommonApiResponse;
 import com.framework.app.controller.sample.dto.*;
 import com.framework.app.service.sample.SampleService;
 import com.framework.app.service.sample.dto.*;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -16,15 +17,16 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/v1/api/sample")
+@RequestMapping(value="/v1/api/sample")
 @RestController
 public class SampleController {
 
     private final SampleService service;
 
-    @GetMapping("sample")
-    public ResponseEntity<CommonApiResponse> getSampleList() {
-        GetSampleListCOutDto cOutDto = new GetSampleListCOutDto();
+    @PostMapping(value="/sample-list")
+    @Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
+    public ResponseEntity<CommonApiResponse> sampleList(@RequestBody @Validated SampleListCInDto cInDto) {
+        SampleListCOutDto cOutDto = new SampleListCOutDto();
 
         GetSampleListSInDto sInDto = new GetSampleListSInDto();
         //BeanUtils.copyProperties(cInDto, sInDto);
@@ -34,20 +36,22 @@ public class SampleController {
         return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);
     }
 
-    @GetMapping("sample/{sampleId}")
-    public ResponseEntity<CommonApiResponse> getSample(@PathVariable String sampleId) {
-        GetSampleCOutDto cOutDto = new GetSampleCOutDto();
+    @PostMapping(value="/sample-detail")
+    @Operation(summary="샘플 상세 조회", description = "샘플상세를 조회한다.")
+    public ResponseEntity<CommonApiResponse> sampleDetail(@RequestBody @Validated SampleDetailCInDto cInDto) {
+        SampleDetailCOutDto cOutDto = new SampleDetailCOutDto();
 
         GetSampleSInDto sInDto = new GetSampleSInDto();
-        sInDto.setSampleId(sampleId);
+        BeanUtils.copyProperties(cInDto, sInDto);
         GetSampleSOutDto sample = service.getSample(sInDto);
         cOutDto.setSample(sample);
 
         return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);
     }
 
-    @PostMapping("/save/sample")
-    public ResponseEntity<CommonApiResponse> saveSample(@RequestBody SaveSampleCInDto cInDto) {
+    @PostMapping(value="/sample-save")
+    @Operation(summary="샘플 저장", description = "샘플을 저장한다.")
+    public ResponseEntity<CommonApiResponse> SampleSave(@RequestBody @Validated SampleSaveCInDto cInDto) {
 
         SaveSampleSInDto sInDto = new SaveSampleSInDto();
         BeanUtils.copyProperties(cInDto, sInDto);
@@ -56,8 +60,9 @@ public class SampleController {
         return new ResponseEntity<>(CommonApiResponse.ok("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/sample/update/{sampleId}")
-    public ResponseEntity<CommonApiResponse> updateSample(@PathVariable String sampleId, @RequestBody @Validated UpdateSampleCInDto cInDto) {
+    @PostMapping(value="/sample-update")
+    @Operation(summary="샘플 수정", description = "샘플을 수정한다.")
+    public ResponseEntity<CommonApiResponse> sampleUpdate(@RequestBody @Validated SampleUpdateCInDto cInDto) {
 
         UpdateSampleSInDto sInDto = new UpdateSampleSInDto();
         BeanUtils.copyProperties(cInDto, sInDto);
@@ -66,11 +71,12 @@ public class SampleController {
         return new ResponseEntity<>(CommonApiResponse.ok("success"), HttpStatus.OK);
     }
 
-    @PostMapping("/sample/delete/{sampleId}")
-    public ResponseEntity<CommonApiResponse> deleteSample(@PathVariable String sampleId) {
+    @PostMapping(value="/sample-delete")
+    @Operation(summary="샘플 삭제", description = "샘플을 삭제한다.")
+    public ResponseEntity<CommonApiResponse> sampleDelete(@RequestBody @Validated SampleDeleteCInDto cInDto) {
 
         DeleteSampleSInDto sInDto = new DeleteSampleSInDto();
-        sInDto.setSampleId(sampleId);
+        BeanUtils.copyProperties(cInDto, sInDto);
         service.deleteSample(sInDto);
 
         return new ResponseEntity<>(CommonApiResponse.ok("success"), HttpStatus.OK);

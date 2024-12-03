@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateSampleCInDto {
+public class SampleUpdateCInDto {
 
     @NotEmpty(message="그룹을 입력하세요.")
     private String sampleGroup;
