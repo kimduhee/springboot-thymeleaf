@@ -149,43 +149,6 @@ public class CommonExceptionHandler {
             return true;
         }
 
-//        if(nativeWebRequest != null) {
-//
-//            List<MediaType> mediaTypeList;
-//            try {
-//                mediaTypeList = contentNegotiatingViewResolver.getContentNegotiationManager().resolveMediaTypes(nativeWebRequest);
-//            } catch(HttpMediaTypeNotAcceptableException e) {
-//                mediaTypeList = new ArrayList<MediaType>();
-//            }
-//
-//            for(MediaType mt : mediaTypeList) {
-//                if(mt.getType().indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
-//                    return false;
-//                }
-//            }
-//        }
-
-//        if(handlerMethod != null) {
-//
-//            if(handlerMethod.getMethodAnnotation(RequestMapping.class) != null) {
-//                String[] mtList = handlerMethod.getMethodAnnotation(RequestMapping.class).produces();
-//                for(String mt : mtList) {
-//                    if(mt.indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
-//                        return true;
-//                    }
-//                }
-//            }
-//
-//            if(handlerMethod.getMethod().getDeclaringClass().getAnnotation(RequestMapping.class) != null) {
-//                String[] mtList = handlerMethod.getMethod().getDeclaringClass().getAnnotation(RequestMapping.class).produces();
-//                for(String mt : mtList) {
-//                    if(mt.indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-
         return isViewResponse;
     }
 }

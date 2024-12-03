@@ -1,6 +1,5 @@
 package com.framework.app.controller.sample.dto;
 
-import com.framework.app.service.sample.dto.GetSampleSOutDto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
