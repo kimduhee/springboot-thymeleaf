@@ -1,5 +1,6 @@
 package com.framework.app.controller.main;
 
+import com.framework.app.common.exception.BizException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
