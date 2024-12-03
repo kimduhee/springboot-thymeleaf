@@ -5,6 +5,7 @@
     <settings>
         <!-- INSERT,UPDATE 시 Java의 null 값을 DB의 NULL로 인식하도록 설정-->
         <setting name="jdbcTypeForNull" value="NULL" />
+        <!-- DB 조회에 따른 결과 컬럼값이 카멜(USER_ID => userId)패턴으로 리턴 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
         <!-- 쿼리 및 기타 로그 메시지 출력 -->
         <setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
