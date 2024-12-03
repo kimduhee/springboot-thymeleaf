@@ -26,9 +26,9 @@ public class SampleController {
 
     private final SampleService service;
 
-    @PostMapping(value="/sample-list")
+    @GetMapping(value="/sample-list")
     @Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
-    public ResponseEntity<CommonApiResponse> sampleList(@RequestBody @Validated SampleListCInDto cInDto) {
+    public ResponseEntity<CommonApiResponse> sampleList(@Validated SampleListCInDto cInDto) {
         SampleListCOutDto cOutDto = new SampleListCOutDto();
 
         GetSampleListSInDto sInDto = new GetSampleListSInDto();

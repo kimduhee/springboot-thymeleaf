@@ -21,7 +21,28 @@ springdoc:
 + swagger 사용을 위한 @Operation 정의 summary : api 제목, description : 설명
 + return type은 <code>ResponseEntity&lt;CommonApiResponse&gt;</code> 로 지정하고 리턴시
 <code>return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);</code> 의 cOutDto에 리턴 객체를 지정한다.
-<pre><code>@PostMapping(value="/sample-list")
+
+<pre><code>Get 방식 
+input Dto에 @RequestBody 제외
+
+@GetMapping(value="/sample-list")
+@Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
+public ResponseEntity<CommonApiResponse> sampleList(@Validated SampleListCInDto cInDto) {
+    SampleListCOutDto cOutDto = new SampleListCOutDto();
+
+    GetSampleListSInDto sInDto = new GetSampleListSInDto();
+    //BeanUtils.copyProperties(cInDto, sInDto);
+    List<GetSampleListSOutDto> sampleList =  service.getSampleList(sInDto);
+    cOutDto.setSampleList(sampleList);
+
+    return new ResponseEntity<>(CommonApiResponse.ok(cOutDto), HttpStatus.OK);
+}
+</code></pre>
+
+<pre><code>POST 방식
+input Dto에 @RequestBody 포함
+
+@PostMapping(value="/sample-list")
 @Operation(summary="샘플 리스트 조회", description = "샘플리스트를 조회한다.")
 public ResponseEntity<CommonApiResponse> sampleList(@RequestBody @Validated SampleListCInDto cInDto) {
 SampleListCOutDto cOutDto = new SampleListCOutDto();

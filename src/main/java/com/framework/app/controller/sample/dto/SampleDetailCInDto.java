@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class SampleDetailCInDto {
 
     @Schema(description = "샘플키값", example = "1")

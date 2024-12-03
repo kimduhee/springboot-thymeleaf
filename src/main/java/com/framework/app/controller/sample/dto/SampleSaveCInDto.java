@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
 public class SampleSaveCInDto {
 
     @Schema(description = "그룹명", example = "A그룹")
