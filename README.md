@@ -83,6 +83,36 @@ Response body
 - - -
 ### mapper
 내용 추가 예정
+- - -
+### DTO
++ swagger <code>필드정의 @Schema(description = "샘플키값", example = "1")</code>
+<br/>description : 필드값, example  : 예시값
++ validation <code>@NotEmpty(message="키값이 존재하지 않습니다.")</code>
+<br/>message : 해당 validation에 대한 노출 메세지
+<pre><code>Controller input Dto
+
+@Getter
+public class SampleDetailCInDto {
+    @Schema(description = "샘플키값", example = "1")
+    @NotEmpty(message="키값이 존재하지 않습니다.")
+    private String sampleId;
+}
+</code></pre>
+POST Controller input의 경우 <code>@Getter</code>만 추가해도 값들이 binding 되며 
+GET Api의 경우 아래 사항 추가하여 binding 되도록 처리함
+<pre><code>@ControllerAdvice
+public class WebControllerHandler {
+
+    /**
+     * Get 요청시 setter가 아닌 Field에 직접 접근 방식으로 처리
+     * @param binder
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.initDirectFieldAccess();
+    }
+}
+</code></pre>
 <br/><br/>
 
 # Validation
