@@ -127,7 +127,7 @@ public class SampleService {
 </code></pre>
 transaction을 위해 조회성 일 경우는 <code>@Transactional(readOnly=true)</code>을 
 CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>을 기본적으로 기입해 준다
->Transaction propagation(전파옵션)
+> ### Transaction propagation(전파옵션)
 >+ REQUIRED<br/>
 ><code>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성</code>
 ><br/><br/>
@@ -159,7 +159,7 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 >성능 최적화 및 특정 트랜잭션 안에서 쓰기 작업을 의도적으로 방지하기 위함
 >readOnly 값은 기본 false이며, true일 경우 insert,update, delete 실행 시 예외발생</code>
 
->Transaction rollback
+> ### Transaction rollback
 > + rollbackFor <br/>
 ><code>특정 예외가 발생 시 강제로 Rollback</br>
 >예) @Transactional(rollbackFor=Exception.class)</code>
@@ -168,7 +168,7 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 ><code>특정 예외가 발생 시 Rollback 처리되지 않음</br>
 >예) @Transactional(noRollbackFor=Exception.class)</code>
 
->Transaction timeout
+> ### Transaction timeout
 > + rollbackFor <br/>
 ><code>지정된 시간 내에 해당 메소드 수행이 완료되지 않은 경우 rollback 수행</br>
 >-1일경우 no timeout(Default=-1)</br>
