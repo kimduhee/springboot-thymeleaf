@@ -1,16 +1,15 @@
 # Validation
-- - -
 ### Validation 사용방법
 + 컨트롤러의 각 mapping 매개변수(input 객체) 앞에 @Validated 삽입<br/>
 <pre><code>public ResponseEntity<CommonApiResponse> sampleList(@RequestBody @Validated SampleListCInDto cInDto)</code></pre>
 
 + input 객체 필드값에 validation 필드 추가
 <pre><code>@NotEmpty(message="그룹을 입력하세요.")
-private String sampleGroup;</code></pre><br/>
-
+private String sampleGroup;</code></pre>
+- - -
 ### Validation 주의사항
 + 여러 필드에 대해서 validation이 순차적으로(위에서 아래로) 처리 되지 않는다
-<br/><br/>
+- - -
 ### Validation annotation 종류
 + @Null
 <pre><code>null 값만 입력 가능<br/>
@@ -63,16 +62,14 @@ Date eventDate;</code></pre>
 Date birthday;</code></pre>
 
 <br/><br/>
-## BizException
-- - -
+# BizException
 ### BizException 사용방법
-
-/resource/message/error/error_ko.properties에 에러코드 등록
++ /resource/message/error/error_ko.properties에 에러코드 등록
 <pre><code>
 ERRCM009998=테스트 에러입니다.
 ERRCM009999=테스트 {0}번, {1}번 에러입니다.
 </code></pre>
-개발자 exception 발생
++ 개발자 exception 발생
 <pre><code>
 if(1==1) {
     throw new BizException("ERRCM009998");
