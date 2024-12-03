@@ -65,26 +65,22 @@ Date birthday;</code></pre>
 # BizException
 ### BizException 사용방법
 + /resource/message/error/error_ko.properties에 에러코드 등록
-<pre><code>
-ERRCM009998=테스트 에러입니다.
+<pre><code>ERRCM009998=테스트 에러입니다.
 ERRCM009999=테스트 {0}번, {1}번 에러입니다.
 </code></pre>
 + 개발자 exception 발생
-<pre><code>
-if(1==1) {
+<pre><code>if(1==1) {
     throw new BizException("ERRCM009998");
 }
 => message : 테스트 에러입니다.
 </code></pre>
-<pre><code>
-if(1==1) {
+<pre><code>if(1==1) {
     String[] errTxt = {"1", "2"};
     throw new BizException("ERRCM009999");
 }
 => message : 테스트 1번, 2번 에러입니다.
 </code></pre>
-<pre><code>
-if(1==1) {
+<pre><code>if(1==1) {
     throw new BizException("ERRCM009998", "다른 메세지입니다.");
 }
 => message : 다른 메세지입니다.
