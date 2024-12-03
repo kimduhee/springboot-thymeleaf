@@ -17,27 +17,27 @@ public class SampleService {
 
     private final SampleMapper sampleMapper;
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly=true, rollbackFor=Exception.class)
     public List<GetSampleListSOutDto> getSampleList(GetSampleListSInDto getSampleListSInDto) {
         return sampleMapper.getSampleList(getSampleListSInDto);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly=true, rollbackFor=Exception.class)
     public GetSampleSOutDto getSample(GetSampleSInDto getSampleSInDto) {
         return sampleMapper.getSample(getSampleSInDto);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor=Exception.class)
     public int saveSample(SaveSampleSInDto saveSampleSInDto) {
         return sampleMapper.saveSample(saveSampleSInDto);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor=Exception.class)
     public int updateSample(UpdateSampleSInDto updateSampleSInDto) {
         return sampleMapper.updateSample(updateSampleSInDto);
     }
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor=Exception.class)
     public int deleteSample(DeleteSampleSInDto deleteSampleSInDto) {
         return sampleMapper.deleteSample(deleteSampleSInDto);
     }

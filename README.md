@@ -158,6 +158,21 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 ><code>트랜잭션을 읽기 전용으로 설정
 >성능 최적화 및 특정 트랜잭션 안에서 쓰기 작업을 의도적으로 방지하기 위함
 >readOnly 값은 기본 false이며, true일 경우 insert,update, delete 실행 시 예외발생</code>
+
+>Transaction rollback
+> + rollbackFor <br/>
+><code>특정 예외가 발생 시 강제로 Rollback</br>
+>예) @Transactional(rollbackFor=Exception.class)</code>
+><br/><br/>
+> + noRollbackFor <br/>
+><code>특정 예외가 발생 시 Rollback 처리되지 않음</br>
+>예) @Transactional(noRollbackFor=Exception.class)</code>
+
+>Transaction timeout
+> + rollbackFor <br/>
+><code>지정된 시간 내에 해당 메소드 수행이 완료되지 않은 경우 rollback 수행</br>
+>-1일경우 no timeout(Default=-1)</br>
+>예) @Transactional(timeout=100)</code>
 - - -
 ### mapper
 내용 추가 예정
