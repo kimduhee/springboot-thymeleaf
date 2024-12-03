@@ -128,36 +128,36 @@ public class SampleService {
 transaction을 위해 조회성 일 경우는 <code>@Transactional(readOnly=true)</code>을 
 CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>을 기본적으로 기입해 준다
 >Transaction propagation(전파옵션)
->>+ REQUIRED<br/>
->><code>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성</code>
->
->>+ SUPPORTS
->><br/>시작된 트랜잭션이 있으면 참여, 그렇지 않으면 트랜잭션 없이 진행
->
->>+ REQUIRES_NEW
->><br/>부모 트랜잭션을 무시하고 새로운 트랜잭션 생성
->
->>+ MANDATORY
->><br/>REQUIRED와 비슷하며 시작된 트랜잭션이 있으면 참여
->><br/>트랜잭션이 시작된 것이 없으면 예외를 발생
->><br/>독립적으로 트랜잭션을 진행하면 안 되는 경우 사용
->
->>+ NOT_SUPPORTED
->><br/>트랜잭션을 사용하지 않게 함
->><br/>이미 진행 중인 트랜잭션은 보류시킴
->
->>+ NEVER
->><br/>트랜잭션을 사용하지 않게 강제함
->><br/>이미 진행 중인 트랜잭션이 있으면 예외 발생
->
->>+ NESTED
->><br/>진행중인 트랜잭션이 있으면 중첩 트랜잭션 시작
->><br/>중첩 트랜잭션은 트랜잭션 안에 다시 트랜잭션을 만듬
->
->>+ readOnly
->><br/>트랜잭션을 읽기 전용으로 설정
->><br/>성능 최적화 및 특정 트랜잭션 안에서 쓰기 작업을 의도적으로 방지하기 위함
->><br/>readOnly 값은 기본 false이며, true일 경우 insert,update, delete 실행 시 예외발생
+>+ REQUIRED<br/>
+><code>디폴트 속성으로 부모 트랜젝션 내에서 실행, 부모 트랜젝션이 없을경우 새로운 트랜잭션 생성</code>
+><br/><br/>
+>+ SUPPORTS<br/>
+><code>시작된 트랜잭션이 있으면 참여, 그렇지 않으면 트랜잭션 없이 진행</code>
+><br/><br/>
+>+ REQUIRES_NEW<br/>
+><code>부모 트랜잭션을 무시하고 새로운 트랜잭션 생성</code>
+><br/><br/>
+>+ MANDATORY<br/>
+><code>REQUIRED와 비슷하며 시작된 트랜잭션이 있으면 참여
+>트랜잭션이 시작된 것이 없으면 예외를 발생
+>독립적으로 트랜잭션을 진행하면 안 되는 경우 사용</code>
+><br/><br/>
+>+ NOT_SUPPORTED<br/>
+><code>트랜잭션을 사용하지 않게 함
+>이미 진행 중인 트랜잭션은 보류시킴</code>
+><br/><br/>
+>+ NEVER<br/>
+><code>트랜잭션을 사용하지 않게 강제함
+>이미 진행 중인 트랜잭션이 있으면 예외 발생</code>
+><br/><br/>
+>+ NESTED<br/>
+><code>진행중인 트랜잭션이 있으면 중첩 트랜잭션 시작
+>중첩 트랜잭션은 트랜잭션 안에 다시 트랜잭션을 만듬</code>
+><br/><br/>
+>+ readOnly<br/>
+><code>트랜잭션을 읽기 전용으로 설정
+>성능 최적화 및 특정 트랜잭션 안에서 쓰기 작업을 의도적으로 방지하기 위함
+>readOnly 값은 기본 false이며, true일 경우 insert,update, delete 실행 시 예외발생</code>
 - - -
 ### mapper
 내용 추가 예정
