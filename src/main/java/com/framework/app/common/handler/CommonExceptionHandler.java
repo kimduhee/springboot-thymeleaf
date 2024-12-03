@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,12 @@ public class CommonExceptionHandler {
     @Autowired
     ErrorMessageSourceFactory errorMessageSourceFactory;
 
+    /**
+     * 404 not found 처리
+     * @param e
+     * @param httpServletRequest
+     * @return
+     */
     @ExceptionHandler(NoHandlerFoundException.class)
     public Object handleNotFoundException(NoHandlerFoundException e, HttpServletRequest httpServletRequest) {
 
@@ -37,7 +44,7 @@ public class CommonExceptionHandler {
 
         ErrorMessageSourceFactory errorMessageSourceFactory = BeanUtil.getBean(ErrorMessageSourceFactory.class);
 
-        CommonApiResponse res = CommonApiResponse.fail(404,"ERRCM000404", errorMessageSourceFactory.getMessage("ERRCM000404"));
+        CommonApiResponse res = CommonApiResponse.fail(HttpStatus.NOT_FOUND,"ERRCM000404", errorMessageSourceFactory.getMessage("ERRCM000404"));
 
         if(log.isInfoEnabled()) {
             log.info("NoHandlerFoundException : [ERRCM000404]{}", errorMessageSourceFactory.getMessage("ERRCM000404"));
@@ -46,6 +53,38 @@ public class CommonExceptionHandler {
         return new ResponseEntity<>(res, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Controller input validation check
+     * @param e
+     * @param httpServletRequest
+     * @return
+     */
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest httpServletRequest) {
+
+        if(!isAjax(httpServletRequest)) {
+            //httpServletRequest.setAttribute("test","test", WebRequest.SCOPE_REQUEST);
+            ModelAndView mav = new ModelAndView("forward:/v1/view/comm/400");
+            return mav;
+        }
+
+        ErrorMessageSourceFactory errorMessageSourceFactory = BeanUtil.getBean(ErrorMessageSourceFactory.class);
+
+        CommonApiResponse res = CommonApiResponse.fail(HttpStatus.BAD_REQUEST, "ERRCM000400", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+
+        if(log.isInfoEnabled()) {
+            log.info("BizException : [ERRCM000400]{}", e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        }
+
+        return new ResponseEntity<>(res, HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * 커스텀 BizException 처리
+     * @param e
+     * @param httpServletRequest
+     * @return
+     */
     @ExceptionHandler(BizException.class)
     public Object handleBizException(BizException e, HttpServletRequest httpServletRequest) {
 
@@ -61,7 +100,7 @@ public class CommonExceptionHandler {
             e.setErrMessage(errorMessageSourceFactory.getMessage(e.getErrCode()));
         }
 
-        CommonApiResponse res = CommonApiResponse.fail(500,e.getErrCode(), e.getMessage());
+        CommonApiResponse res = CommonApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR, e.getErrCode(), e.getMessage());
 
         if(log.isInfoEnabled()) {
             log.info("BizException : [{}]{}",e.getErrCode(), e.getMessage());
@@ -81,7 +120,7 @@ public class CommonExceptionHandler {
 
         ErrorMessageSourceFactory errorMessageSourceFactory = BeanUtil.getBean(ErrorMessageSourceFactory.class);
 
-        CommonApiResponse res = CommonApiResponse.fail(500,"ERRCM000000", errorMessageSourceFactory.getMessage("ERRCM000000"));
+        CommonApiResponse res = CommonApiResponse.fail(HttpStatus.INTERNAL_SERVER_ERROR,"ERRCM000000", errorMessageSourceFactory.getMessage("ERRCM000000"));
 
         if(log.isInfoEnabled()) {
             log.info("RuntimeException : [ERRCM000000]{}", errorMessageSourceFactory.getMessage("ERRCM000000"));
@@ -101,7 +140,7 @@ public class CommonExceptionHandler {
         boolean isViewResponse = false;
 
         //Request Content-type 에 application/json 이 포함될 경우 ajax 통신
-        if(httpServletRequest.getContextPath() != null && httpServletRequest.getContextPath().indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
+        if(httpServletRequest.getContentType() != null && httpServletRequest.getContentType().indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
             return true;
         }
 

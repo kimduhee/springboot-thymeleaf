@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.slf4j.MDC;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
@@ -41,7 +42,7 @@ public class CommonApiResponse<T> {
      */
     public static <T> CommonApiResponse<T> ok(T data) {
         return CommonApiResponse.<T>builder()
-                .status(200)
+                .status(HttpStatus.OK.value())
                 .data(data)
                 .code("00")
                 .message("success")
@@ -59,9 +60,9 @@ public class CommonApiResponse<T> {
      * @return
      * @param <T>
      */
-    public static <T> CommonApiResponse<T> fail(int status, String code, String message) {
+    public static <T> CommonApiResponse<T> fail(HttpStatus status, String code, String message) {
         return CommonApiResponse.<T>builder()
-                .status(status)
+                .status(status.value())
                 .code(code)
                 .message(message)
                 .time(LocalDateTime.now())

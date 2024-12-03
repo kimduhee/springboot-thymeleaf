@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class SampleController {
     }
 
     @PostMapping("/sample/update/{sampleId}")
-    public ResponseEntity<CommonApiResponse> updateSample(@PathVariable String sampleId, @RequestBody UpdateSampleCInDto cInDto) {
+    public ResponseEntity<CommonApiResponse> updateSample(@PathVariable String sampleId, @RequestBody @Validated UpdateSampleCInDto cInDto) {
 
         UpdateSampleSInDto sInDto = new UpdateSampleSInDto();
         BeanUtils.copyProperties(cInDto, sInDto);
