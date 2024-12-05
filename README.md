@@ -14,7 +14,41 @@ springdoc:
   swagger-ui:
     enabled: false  //true: 적용(local, dev), false: 제외(stg, prd)
 </code></pre>
+- - -
+### Mybatis
++ Mybatis 설정
++ mapper xml 경로 지정
++ config class 경로 <code>com.framework.app.common.config.DataBaseConfiguration</code>
+<pre><code>@Bean
+@Primary
+public SqlSessionFactory appSessionFactory(@Autowired @Qualifier("appDataSource")DataSource dataSource) throws Exception {
+    SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
+    sessionFactoryBean.setDataSource(dataSource);
+    sessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/mappers/*.xml"));
+    sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
+    //sessionFactoryBean.setTypeAliasesPackage("com.framework.app");
+    return sessionFactoryBean.getObject();
+}
+</code></pre>
+
++ mybatis 설정
++ 경로 <code>/resources/mybatis/mybatis-config.xml</code>
+<pre><code>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+
+&lt;configuration&gt;
+    &lt;settings&gt;
+        &lt;!-- INSERT,UPDATE 시 Java의 null 값을 DB의 NULL로 인식하도록 설정--&gt;
+        &lt;setting name="jdbcTypeForNull" value="NULL" /&gt;
+        &lt;!-- DB 조회에 따른 결과 컬럼값이 카멜(USER_ID => userId)패턴으로 리턴 --&gt;
+        &lt;setting name="mapUnderscoreToCamelCase" value="true"/&gt;
+        &lt;!-- 쿼리 및 기타 로그 메시지 출력 --&gt;
+        &lt;setting name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/&gt;
+    &lt;/settings&gt;
+&lt;/configuration&gt;
+</code></pre>
 <br/><br/>
+
 # 개발 가이드
 ### API Controller
 + API controller 명시를 위해 class상단에 <code>@RestController</code> 추가
@@ -240,6 +274,61 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 >>    WHERE SAMPLE_ID = #{sampleId}
 >>&lt;/delete&gt;
 >></code></pre>
+
+>+ mybatis 문법
+>> + 주의사항
+>> <pre><code>- '&lt;' 또는 '&gt;' 처리
+>> 쿼리문에 '&lt;' 또는 '&gt;'가 포함되어 있을경우에는 해당 태그에 
+>> &lt;![CDATA[ '&lt;' 또는 '&gt;' ]]&gt; 로 감싸야 한다.
+>> 
+>> -변수바인딩
+>> #{변수명}으로 사용하며, 가급적 ${변수명}은 지양한다.
+>> (${변수명}사용시 해당 변수값 자체가 쿼리문에 포함되어 바인딩되므로 SQL Injection 방생 소지가 있다.)
+>> </code></pre>
+>> + 단일조건 &lt;if&gt;
+>> <pre><code>&lt;if test='userId != null and userId != ""'&gt;
+>>  조건 쿼리
+>> &lt;/if&gt;
+>> </code></pre>
+>> <pre><code>&lt;if test='"".equals(userId)'&gt;
+>>  조건 쿼리
+>> &lt;/if&gt;
+>> </code></pre>
+>> </code></pre>
+>> <pre><code>&lt;if test='!"".equals(userId)'&gt;
+>>  조건 쿼리
+>> &lt;/if&gt;
+>> </code></pre>
+>> </code></pre>
+>> <pre><code>&lt;if test='userId eq "kang".toString()'&gt;
+>>  조건 쿼리
+>> &lt;/if&gt;
+>> </code></pre>
+>> <pre><code>&lt;if test='userId neq "kang".toString()'&gt;
+>>  조건 쿼리
+>> &lt;/if&gt;
+>> </code></pre>
+>
+>> + 다중조건 &lt;choose&gt;, &lt;when&gt;, &lt;otherwise&gt;
+>> <pre><code>&lt;choose&gt;
+>>  &lt;when test='"kim".equals(userName)'&gt;
+>>      조건 쿼리
+>>  &lt;/when&gt;
+>>  &lt;when test='"park".equals(userName)'&gt;
+>>      조건 쿼리
+>>  &lt;/when&gt;
+>>  &lt;orderwise&gt;
+>>      조건 쿼리
+>>  &lt;/orderwise&gt;
+>> &lt;/choose&gt;
+>> </code></pre>
+>
+>> + 반복문  &lt;foreach&gt;
+>> <pre><code>WHERE USER_ID IN
+>> &lt;foreach collection="userList" item="item" open="(" separator="," close=")"&gt;
+>>        #{item.userId}
+>> &lt;/foreach&gt;
+>> </code></pre>
 - - -
 ### DTO
 + swagger <code>필드정의 @Schema(description = "샘플키값", example = "1")</code>
