@@ -26,7 +26,6 @@ public SqlSessionFactory appSessionFactory(@Autowired @Qualifier("appDataSource"
     sessionFactoryBean.setDataSource(dataSource);
     sessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:/mybatis/mappers/*.xml"));
     sessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:/mybatis/mybatis-config.xml"));
-    //sessionFactoryBean.setTypeAliasesPackage("com.framework.app");
     return sessionFactoryBean.getObject();
 }
 </code></pre>
@@ -79,7 +78,6 @@ public class SampleController {
       SampleListCOutDto cOutDto = new SampleListCOutDto();
   
       GetSampleListSInDto sInDto = new GetSampleListSInDto();
-      //BeanUtils.copyProperties(cInDto, sInDto);
       List<GetSampleListSOutDto> sampleList =  service.getSampleList(sInDto);
       cOutDto.setSampleList(sampleList);
   
@@ -97,7 +95,6 @@ public ResponseEntity<CommonApiResponse> sampleList(@RequestBody @Validated Samp
 SampleListCOutDto cOutDto = new SampleListCOutDto();
 
     GetSampleListSInDto sInDto = new GetSampleListSInDto();
-    //BeanUtils.copyProperties(cInDto, sInDto);
     List<GetSampleListSOutDto> sampleList =  service.getSampleList(sInDto);
     cOutDto.setSampleList(sampleList);
 
@@ -286,25 +283,30 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 >> (${변수명}사용시 해당 변수값 자체가 쿼리문에 포함되어 바인딩되므로 SQL Injection 방생 소지가 있다.)
 >> </code></pre>
 >> + 단일조건 &lt;if&gt;
->> <pre><code>&lt;if test='userId != null and userId != ""'&gt;
+>> <pre><code>userId 값이 있을 경우
+>> &lt;if test='userId != null and userId != ""'&gt;
 >>  조건 쿼리
 >> &lt;/if&gt;
 >> </code></pre>
->> <pre><code>&lt;if test='"".equals(userId)'&gt;
+>> <pre><code>userId가 빈 값일 경우
+>> &lt;if test='"".equals(userId)'&gt;
 >>  조건 쿼리
 >> &lt;/if&gt;
 >> </code></pre>
 >> </code></pre>
->> <pre><code>&lt;if test='!"".equals(userId)'&gt;
+>> <pre><code>userId가 빈 값이 아닐 경우
+>> &lt;if test='!"".equals(userId)'&gt;
 >>  조건 쿼리
 >> &lt;/if&gt;
 >> </code></pre>
 >> </code></pre>
->> <pre><code>&lt;if test='userId eq "kang".toString()'&gt;
+>> <pre><code>userId 값이 Kang 일 경우
+>> &lt;if test='userId eq "kang".toString()'&gt;
 >>  조건 쿼리
 >> &lt;/if&gt;
 >> </code></pre>
->> <pre><code>&lt;if test='userId neq "kang".toString()'&gt;
+>> <pre><code>userId 값이 Kang가 아닐 경우
+>> &lt;if test='userId neq "kang".toString()'&gt;
 >>  조건 쿼리
 >> &lt;/if&gt;
 >> </code></pre>
@@ -344,7 +346,7 @@ public class SampleDetailCInDto {
     private String sampleId;
 }
 </code></pre>
-POST Controller input DTO의 경우 <code>@Getter</code>만 추가해도 값들이 binding 되며 
+[참고]POST Controller input DTO의 경우 <code>@Getter</code>만 추가해도 값들이 binding 되며 
 GET Api의 경우 아래 사항 추가하여 binding 되도록 처리함
 <pre><code>@ControllerAdvice
 public class WebControllerHandler {
