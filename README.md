@@ -175,7 +175,71 @@ CUD의 경우는 <code>@Transactional(propagation = Propagation.REQUIRED)</code>
 >예) @Transactional(timeout=100)</code>
 - - -
 ### mapper
-내용 추가 예정
+>+ 쿼리 XML 작성
+>>+ 경로 
+>><code>/resources/mybatis/mappers/{업무}.xml</code>
+>><pre><code>상단에 아래 내용 추가</br>
+>>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+>>&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+>></code></pre>
+>>
+>><pre><code>Mapper class 지정</br>
+>>&lt;mapper namespace="com.framework.app.mapper.sample.SampleMapper"&gt;
+>></code></pre>
+>>
+>><pre><code>Select</br>
+>>&lt;select id="getSampleList" parameterType="com.framework.app.service.sample.dto.GetSampleListSInDto" resultType="com.framework.app.service.sample.dto.GetSampleListSOutDto"&gt;
+>>    /** com.framework.app.mapper.sample.SampleMapper.getSampleList **/
+>>    SELECT
+>>        SAMPLE_ID
+>>        , SAMPLE_GROUP
+>>        , SAMPLE_NAME
+>>        , REG_ID
+>>        , REG_DT
+>>    FROM SAMPLE
+>>&lt;/select&gt;
+>></code></pre>
+>>
+>><pre><code>Update</br>
+>>&lt;update id="updateSample" parameterType="com.framework.app.service.sample.dto.UpdateSampleSInDto"&gt;
+>>    /** com.framework.app.mapper.sample.SampleMapper.updateSample **/
+>>    UPDATE SAMPLE SET
+>>        SAMPLE_GROUP = #{sampleGroup}
+>>        , SAMPLE_NAME = #{sampleName}
+>>        , UPD_ID = #{userId}
+>>        , UPD_DT = NOW()
+>>    WHERE SAMPLE_ID = #{sampleId}
+>>&lt;/update&gt;
+>></code></pre>
+>>
+>><pre><code>Insert</br>
+>>&lt;insert id="saveSample" parameterType="com.framework.app.service.sample.dto.SaveSampleSInDto"&gt;
+>>    /** com.framework.app.mapper.sample.SampleMapper.saveSample **/
+>>    INSERT INTO SAMPLE (
+>>        SAMPLE_GROUP
+>>        , SAMPLE_NAME
+>>        , REG_ID
+>>        , REG_DT
+>>        , UPD_ID
+>>        , UPD_DT
+>>    ) VALUES (
+>>        #{sampleGroup}
+>>        , #{sampleName}
+>>        , #{userId}
+>>        , NOW()
+>>        , #{userId}
+>>        , NOW()
+>>    );
+>>&lt;/insert&gt;
+>></code></pre>
+>>
+>><pre><code>Delete</br>
+>>&lt;delete id="deleteSample" parameterType="com.framework.app.service.sample.dto.DeleteSampleSInDto"&gt;
+>>    /** com.framework.app.mapper.sample.SampleMapper.deleteSample **/
+>>    DELETE FROM SAMPLE
+>>    WHERE SAMPLE_ID = #{sampleId}
+>>&lt;/delete&gt;
+>></code></pre>
 - - -
 ### DTO
 + swagger <code>필드정의 @Schema(description = "샘플키값", example = "1")</code>
