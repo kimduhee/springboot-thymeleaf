@@ -1,5 +1,5 @@
 # 개발환경
-+ JDK 1.7(17.0.13)
++ JDK 17(17.0.13)
 + IDE IntelliJ
 + PORT 8080
 <br/><br/>
