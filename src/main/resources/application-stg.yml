@@ -54,6 +54,7 @@ logging:
     org.springframework.web: debug
     root: info
 
+#Swagger 설정(사용안함)
 springdoc:
   swagger-ui:
     enabled: false

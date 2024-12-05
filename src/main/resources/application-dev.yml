@@ -54,6 +54,7 @@ logging:
     org.springframework.web: debug
     root: info
 
+#Swagger 설정
 springdoc:
   packages-to-scan: com.framework.app
   default-consumes-media-type: application/json;charset=UTF-8
